@@ -4,12 +4,10 @@ import com.codeart.bookaro.catalog.application.port.CatalogUseCase;
 import com.codeart.bookaro.catalog.domain.Book;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -19,7 +17,16 @@ public class CatalogController {
     private final CatalogUseCase catalogService;
 
     @GetMapping()
-    public List<Book> findAll() {
+    public List<Book> getAll(
+            @RequestParam Optional<String> title,
+            @RequestParam Optional<String> author
+            ) {
+        if (title.isPresent() && author.isEmpty()){
+            return catalogService.findByTitle(title.get());
+        }
+        else if (title.isEmpty() && author.isPresent()){
+            return catalogService.findByAuthor(author.get());
+        }
         return catalogService.findAll();
     }
 
@@ -29,6 +36,13 @@ public class CatalogController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping(params = {"title"})
+    public List<Book> findByTitle(@RequestParam(required = false) String title) {
+        return catalogService.findByTitle(title);
+    }
+
+
 
 
 }
