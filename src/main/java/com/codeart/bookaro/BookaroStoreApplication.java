@@ -1,13 +1,8 @@
 package com.codeart.bookaro;
 
-import com.codeart.bookaro.catalog.application.CatalogController;
-import com.codeart.bookaro.catalog.domain.Book;
-import com.codeart.bookaro.catalog.domain.CatalogService;
-import org.springframework.boot.CommandLineRunner;
+import com.codeart.bookaro.catalog.application.port.CatalogUseCase;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.List;
 
 @SpringBootApplication
 public class BookaroStoreApplication {
@@ -16,9 +11,9 @@ public class BookaroStoreApplication {
 		SpringApplication.run(BookaroStoreApplication.class, args);
 	}
 
-	private final CatalogController catalogController;
+	private final CatalogUseCase catalogController;
 
-	public BookaroStoreApplication(CatalogController catalogController) {
+	public BookaroStoreApplication(CatalogUseCase catalogController) {
 		this.catalogController = catalogController;
 	}
 
