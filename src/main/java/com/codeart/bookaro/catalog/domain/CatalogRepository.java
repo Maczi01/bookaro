@@ -10,7 +10,7 @@ public interface CatalogRepository {
 
     Optional<Book> findOneByTitle(String title);
 
-    void save(Book book);
+    Book save(Book book);
 
     Optional<Book> findById(Long id);
 

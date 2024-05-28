@@ -18,8 +18,6 @@ public class MemoryCatalogRepository implements CatalogRepository {
     private final Map<Long, Book> bookMap = new ConcurrentHashMap<>();
     private final AtomicLong ID_NEXT_VALUE = new AtomicLong(0L);
 
-
-
     @Override
     public List<Book> findAll() {
         return new ArrayList<>(bookMap.values());
@@ -40,7 +38,7 @@ public class MemoryCatalogRepository implements CatalogRepository {
     }
 
     @Override
-    public void save(Book book) {
+    public Book save(Book book) {
         if (book.getId() != null) {
             bookMap.put(book.getId(), book);
         } else {
@@ -48,6 +46,7 @@ public class MemoryCatalogRepository implements CatalogRepository {
             Book newBook = new Book(newId, book.getTitle(), book.getAuthor(), book.getYear(), book.getPrice());
             bookMap.put(newId, newBook);
         }
+        return book;
     }
 
     @Override
