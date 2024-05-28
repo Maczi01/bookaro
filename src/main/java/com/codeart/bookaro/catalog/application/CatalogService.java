@@ -76,5 +76,11 @@ class CatalogService implements CatalogUseCase {
                 .filter(book -> book.getTitle().toLowerCase().startsWith(title))
                 .findFirst();
     }
+
+    @Override
+    public Optional<Book> findById(Long id) {
+        
+        return repository.findById(id);
+    }
 }
 

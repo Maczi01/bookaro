@@ -5,6 +5,7 @@ import com.codeart.bookaro.catalog.domain.Book;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +21,11 @@ public class CatalogController {
     @GetMapping()
     public List<Book> findAll(){
         return catalogService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Book getById(@PathVariable Long id){
+        return catalogService.findById(id).orElse(null);
     }
 
 
