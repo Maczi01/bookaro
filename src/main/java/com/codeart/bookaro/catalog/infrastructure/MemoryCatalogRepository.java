@@ -41,12 +41,13 @@ public class MemoryCatalogRepository implements CatalogRepository {
     public Book save(Book book) {
         if (book.getId() != null) {
             bookMap.put(book.getId(), book);
+            return book;
         } else {
             long newId = nextId();
             Book newBook = new Book(newId, book.getTitle(), book.getAuthor(), book.getYear(), book.getPrice());
             bookMap.put(newId, newBook);
+            return newBook;
         }
-        return book;
     }
 
     @Override

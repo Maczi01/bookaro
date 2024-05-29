@@ -51,8 +51,20 @@ public class CatalogController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> addBook(@RequestBody RestCreateBookCommand command){
         Book book = catalogService.addBook(command.toCommand());
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/" + book.getId().toString()).build().toUri();
+        System.out.println("book----->" + book);
+        URI uri = getUri(book);
         return ResponseEntity.created(uri).build();
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable Long id){
+        catalogService.removeById(id);
+    }
+
+
+    private URI getUri(Book book) {
+        return ServletUriComponentsBuilder.fromCurrentRequestUri().path("/" + book.getId().toString()).build().toUri();
     }
 
     @Data
