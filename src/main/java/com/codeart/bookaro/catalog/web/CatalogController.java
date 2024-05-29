@@ -8,16 +8,16 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.math.BigDecimal;
 import java.net.URI;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -53,11 +53,17 @@ public class CatalogController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> addBook(@Valid @RequestBody RestCreateBookCommand command) {
-        Book book = catalogService.addBook(command.toCommand());
+    public ResponseEntity<Void> addBook(@Valid @RequestBody CatalogController.RestBookCommand command) {
+        Book book = catalogService.addBook(command.toCreateCommand());
         System.out.println("book----->" + book);
         URI uri = getUri(book);
         return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void updateBook(@PathVariable Long id, @Valid @RequestBody RestBookCommand command) {
+        catalogService.updateBook(command.toUpdateCommand(id));
     }
 
     @DeleteMapping("/{id}")
@@ -73,7 +79,7 @@ public class CatalogController {
 
 
     @Data
-    private static class RestCreateBookCommand {
+    private static class RestBookCommand {
         @NotBlank
         private String title;
 
@@ -87,8 +93,14 @@ public class CatalogController {
         @DecimalMin("0.00")
         private BigDecimal price;
 
-        CatalogUseCase.CreateBookCommand toCommand() {
+        CatalogUseCase.CreateBookCommand toCreateCommand() {
             return new CatalogUseCase.CreateBookCommand(title, author, year, price);
+        }
+
+        CatalogUseCase.UpdateBookCommand toUpdateCommand(Long id) {
+            return new CatalogUseCase.UpdateBookCommand(
+                    id, title, author, year, price
+            );
         }
     }
 
