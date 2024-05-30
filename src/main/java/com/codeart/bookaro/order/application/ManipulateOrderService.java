@@ -1,9 +1,11 @@
 package com.codeart.bookaro.order.application;
 
+import com.codeart.bookaro.order.application.port.ManipulateOrderUseCase;
 import com.codeart.bookaro.order.application.port.PlaceOrderUseCase;
 import com.codeart.bookaro.order.application.port.QueryOrderUseCase;
 import com.codeart.bookaro.order.domain.Order;
 import com.codeart.bookaro.order.domain.OrderRepository;
+import com.codeart.bookaro.order.domain.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +13,8 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PlaceOrderService implements PlaceOrderUseCase {
+public class ManipulateOrderService implements ManipulateOrderUseCase {
+
 
     private final OrderRepository repository;
 
@@ -25,5 +28,20 @@ public class PlaceOrderService implements PlaceOrderUseCase {
         Order savedOrder = repository.save(order);
         System.out.println("saved" + savedOrder);
         return PlaceOrderResponse.success(savedOrder.getId());
+    }
+
+    @Override
+    public void deleteOrderById(Long id) {
+        repository.deleteById(id);
+
+    }
+
+    @Override
+    public void updateOrderStatus(Long id, OrderStatus status) {
+        repository.findById(id)
+                .ifPresent(order -> {
+                    order.setOrderStatus(status);
+                    repository.save(order);
+                });
     }
 }

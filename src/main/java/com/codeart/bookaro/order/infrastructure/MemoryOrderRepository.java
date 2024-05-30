@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -36,6 +37,16 @@ public class MemoryOrderRepository implements OrderRepository {
     @Override
     public List<Order> findAll() {
         return storage.values().stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteById(Long id) {
+
+    }
+
+    @Override
+    public Optional<Order> findById(Long id) {
+        return Optional.empty();
     }
 
     private long nextId() {
