@@ -1,6 +1,7 @@
 package com.codeart.bookaro.catalog.application;
 
 import com.codeart.bookaro.catalog.application.port.CatalogUseCase;
+import com.codeart.bookaro.catalog.db.BookJpaRepository;
 import com.codeart.bookaro.catalog.domain.Book;
 import com.codeart.bookaro.catalog.domain.CatalogRepository;
 import com.codeart.bookaro.uploads.application.port.UploadUseCase;
@@ -19,7 +20,7 @@ import static com.codeart.bookaro.uploads.application.port.UploadUseCase.SaveUpl
 @AllArgsConstructor
 class CatalogService implements CatalogUseCase {
 
-    private final CatalogRepository repository;
+    private final BookJpaRepository repository;
     private final UploadUseCase upload;
 
     @Override
@@ -51,7 +52,7 @@ class CatalogService implements CatalogUseCase {
 
     @Override
     public void removeById(Long id) {
-        repository.removeById(id);
+        repository.deleteById(id);
     }
 
     @Override
@@ -67,10 +68,10 @@ class CatalogService implements CatalogUseCase {
     }
 
 
-    @Override
-    public List<Book> findByAuthor(String author) {
-        return repository.findByAuthor(author);
-    }
+//    @Override
+//    public List<Book> findByAuthor(String author) {
+//        return repository.findByAuthor(author);
+//    }
 
     @Override
     public Optional<Book> findOneByTitle(String title) {

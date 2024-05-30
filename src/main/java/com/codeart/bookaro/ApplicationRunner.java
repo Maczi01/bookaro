@@ -58,12 +58,12 @@ public class ApplicationRunner implements CommandLineRunner {
                 .zipCode("56-271")
                 .street("Blotna")
                 .build();
-        PlaceOrderUseCase.PlaceOrderCommand command = PlaceOrderUseCase.PlaceOrderCommand
-                .builder()
-                .recipient(recipient)
-                .item(new OrderItem(pan, 16))
-//                .item(new OrderItem(harry, 7))
-                .build();
+//        PlaceOrderUseCase.PlaceOrderCommand command = PlaceOrderUseCase.PlaceOrderCommand
+//                .builder()
+//                .recipient(recipient)
+//                .item(new OrderItem(pan, 16))
+////                .item(new OrderItem(harry, 7))
+//                .build();
 //        PlaceOrderUseCase.PlaceOrderResponse response = placeOrder.placeOrder(command);
 //        System.out.println("Created ORDER with ID " + response.getOrderId() );
 //        queryOrder.findAll().stream().forEach(f -> System.out.println("total price: " + f.totalPrice()));

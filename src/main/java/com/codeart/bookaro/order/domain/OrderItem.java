@@ -1,10 +1,19 @@
 package com.codeart.bookaro.order.domain;
 
-import com.codeart.bookaro.catalog.domain.Book;
-import lombok.Value;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
+@NoArgsConstructor
+@Entity
 public class OrderItem {
-    Book book;
-    int quantity;
+
+    @Id
+    @GeneratedValue
+    private Long id;
+    private Long bookId;
+    private int quantity;
 }

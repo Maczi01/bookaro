@@ -1,8 +1,8 @@
 package com.codeart.bookaro.order.application;
 
 import com.codeart.bookaro.order.application.port.ManipulateOrderUseCase;
+import com.codeart.bookaro.order.db.OrderJpaRepository;
 import com.codeart.bookaro.order.domain.Order;
-import com.codeart.bookaro.order.domain.OrderRepository;
 import com.codeart.bookaro.order.domain.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ManipulateOrderService implements ManipulateOrderUseCase {
 
-    private final OrderRepository repository;
+    private final OrderJpaRepository repository;
 
     @Override
     public PlaceOrderResponse placeOrder(PlaceOrderCommand command) {

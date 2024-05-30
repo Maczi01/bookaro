@@ -1,7 +1,10 @@
 package com.codeart.bookaro.order.domain;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -9,19 +12,20 @@ import java.util.List;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "orders")
 public class Order {
-    Long id;
-    @Builder.Default
-    OrderStatus orderStatus = OrderStatus.NEW;
-    List<OrderItem> items;
-    Recipient recipient;
-    LocalDateTime createdAt;
+    @Id
+    @GeneratedValue
+    private Long id;
+    private OrderStatus orderStatus;
 
-    public BigDecimal totalPrice() {
-        return items.stream()
-                .map(item -> item.getBook().getPrice().multiply(new BigDecimal(item.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-    }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
+    private List<OrderItem> items;
+    private transient Recipient recipient;
+    private LocalDateTime createdAt;
 
 }
