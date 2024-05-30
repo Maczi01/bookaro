@@ -17,14 +17,14 @@ import java.util.List;
 public class ApplicationRunner implements CommandLineRunner {
 
     private final CatalogUseCase catalogService;
-    private final PlaceOrderUseCase placeOrder;
+//    private final PlaceOrderUseCase placeOrder;
     private final QueryOrderUseCase queryOrder;
     private final String title;
     private final Long limit;
     private final String author;
 
     public ApplicationRunner(CatalogUseCase catalogService,
-                             PlaceOrderUseCase placeOrder,
+//                             PlaceOrderUseCase placeOrder,
                              QueryOrderUseCase queryOrder,
                              @Value("${bookaro.catalog.query}") String title,
                              @Value("${bookaro.catalog.limit}") Long limit,
@@ -32,7 +32,7 @@ public class ApplicationRunner implements CommandLineRunner {
 
     ) {
         this.catalogService = catalogService;
-        this.placeOrder = placeOrder;
+//        this.placeOrder = placeOrder;
         this.queryOrder = queryOrder;
         this.title = title;
         this.limit = limit;
@@ -64,9 +64,9 @@ public class ApplicationRunner implements CommandLineRunner {
                 .item(new OrderItem(pan, 16))
 //                .item(new OrderItem(harry, 7))
                 .build();
-        PlaceOrderUseCase.PlaceOrderResponse response = placeOrder.placeOrder(command);
-        System.out.println("Created ORDER with ID " + response.getOrderId() );
-        queryOrder.findAll().stream().forEach(f -> System.out.println("total price: " + f.totalPrice()));
+//        PlaceOrderUseCase.PlaceOrderResponse response = placeOrder.placeOrder(command);
+//        System.out.println("Created ORDER with ID " + response.getOrderId() );
+//        queryOrder.findAll().stream().forEach(f -> System.out.println("total price: " + f.totalPrice()));
 
     }
 

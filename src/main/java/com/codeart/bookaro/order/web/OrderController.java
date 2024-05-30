@@ -30,19 +30,19 @@ import static com.codeart.bookaro.order.application.port.QueryOrderUseCase.*;
 @RequestMapping("/orders")
 public class OrderController {
 
-    private final ManipulateOrderUseCase manipulateOrder;
-    private final QueryOrderUseCase queryOrder;
+//    private final ManipulateOrderUseCase manipulateOrder;
+//    private final QueryOrderUseCase queryOrder;
 
-    @GetMapping
-    public List<RichOrder> getOrders() {
-        return queryOrder.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<RichOrder> getOrderById(@PathVariable Long id) {
-        return queryOrder.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+//    @GetMapping
+//    public List<RichOrder> getOrders() {
+//        return queryOrder.findAll();
+//    }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<RichOrder> getOrderById(@PathVariable Long id) {
+//        return queryOrder.findById(id)
+//                .map(ResponseEntity::ok)
+//                .orElse(ResponseEntity.notFound().build());
+//    }
 
 }
