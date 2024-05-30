@@ -52,7 +52,7 @@ public class MemoryCatalogRepository implements CatalogRepository {
 
     @Override
     public Optional<Book> findById(Long id) {
-        return Optional.ofNullable(bookMap.get(id));
+        return Optional.of(bookMap.get(id));
     }
 
     @Override

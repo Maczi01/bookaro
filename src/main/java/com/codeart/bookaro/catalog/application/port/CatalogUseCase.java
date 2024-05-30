@@ -30,6 +30,16 @@ public interface CatalogUseCase {
 
     Optional<Book> findById(Long id);
 
+    void addBookCover(UpdateBookCoverCommand cover);
+
+    @Value
+    class UpdateBookCoverCommand {
+        Long id;
+        byte[] file;
+        String contentType;
+        String fileName;
+    }
+
     @Value
     class CreateBookCommand {
         String title;

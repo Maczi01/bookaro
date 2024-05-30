@@ -71,7 +71,7 @@ public class ApplicationRunner implements CommandLineRunner {
     }
 
     private void searchCatalog() {
-        findAndUpdate();
+//        findAndUpdate();
         List<Book> all = catalogService.findAll();
         all.stream().forEach(System.out::println);
     }

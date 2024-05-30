@@ -8,15 +8,31 @@ public class Book {
     private String author;
     private Integer year;
     private BigDecimal price;
+    private Long coverId;
 
-    public Book(Long id, String title, String author, Integer year, BigDecimal price) {
-        this.id = id;
+    public Book(Long newId, String title, String author, Integer year, BigDecimal price) {
         this.title = title;
         this.author = author;
         this.year = year;
         this.price = price;
     }
 
+    public Long getCoverId() {
+        return coverId;
+    }
+
+    public void setCoverId(Long coverId) {
+        this.coverId = coverId;
+    }
+
+    public Book(Long id, String title, String author, Integer year, BigDecimal price, Long coverId) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.year = year;
+        this.price = price;
+        this.coverId = coverId;
+    }
 
     public Book(String title, String author, Integer year, BigDecimal price) {
         this.title = title;
