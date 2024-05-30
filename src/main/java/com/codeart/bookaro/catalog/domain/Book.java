@@ -8,7 +8,7 @@ public class Book {
     private String author;
     private Integer year;
     private BigDecimal price;
-    private Long coverId;
+    private String coverId;
 
     public Book(Long newId, String title, String author, Integer year, BigDecimal price) {
         this.title = title;
@@ -17,15 +17,15 @@ public class Book {
         this.price = price;
     }
 
-    public Long getCoverId() {
+    public String getCoverId() {
         return coverId;
     }
 
-    public void setCoverId(Long coverId) {
+    public void setCoverId(String coverId) {
         this.coverId = coverId;
     }
 
-    public Book(Long id, String title, String author, Integer year, BigDecimal price, Long coverId) {
+    public Book(Long id, String title, String author, Integer year, BigDecimal price, String coverId) {
         this.id = id;
         this.title = title;
         this.author = author;

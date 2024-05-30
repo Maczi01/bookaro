@@ -30,7 +30,7 @@ public interface CatalogUseCase {
 
     Optional<Book> findById(Long id);
 
-    void addBookCover(UpdateBookCoverCommand cover);
+    void updateBookCover(UpdateBookCoverCommand cover);
 
     @Value
     class UpdateBookCoverCommand {

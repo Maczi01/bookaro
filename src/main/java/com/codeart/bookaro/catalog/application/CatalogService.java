@@ -3,6 +3,9 @@ package com.codeart.bookaro.catalog.application;
 import com.codeart.bookaro.catalog.application.port.CatalogUseCase;
 import com.codeart.bookaro.catalog.domain.Book;
 import com.codeart.bookaro.catalog.domain.CatalogRepository;
+import com.codeart.bookaro.uploads.application.port.UploadUseCase;
+import com.codeart.bookaro.uploads.domain.Upload;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -10,14 +13,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.codeart.bookaro.uploads.application.port.UploadUseCase.*;
+
 @Service
+@AllArgsConstructor
 class CatalogService implements CatalogUseCase {
 
     private final CatalogRepository repository;
-
-    public CatalogService(CatalogRepository repository) {
-        this.repository = repository;
-    }
+    private final UploadUseCase upload;
 
     @Override
     public List<Book> findByTitle(String title) {
@@ -83,12 +86,13 @@ class CatalogService implements CatalogUseCase {
     }
 
     @Override
-    public void addBookCover(UpdateBookCoverCommand cover) {
-        System.out.println("getFileName" + cover.getFileName());
-        System.out.println("getContentType" + cover.getContentType());
-        System.out.println("File: " + cover.getFile().length + " length");
-        repository.findById(cover.getId())
-                .ifPresent(book -> book.setCoverId(cover.getId()));
+    public void updateBookCover(UpdateBookCoverCommand command) {
+        repository.findById(command.getId())
+                .ifPresent(book -> {
+                    Upload savedUpload = upload.save(new SaveUploadCommand(command.getFileName(), command.getFile(), command.getContentType()));
+                    book.setCoverId(savedUpload.getId());
+                    repository.save(book);
+                });
     }
 }
 

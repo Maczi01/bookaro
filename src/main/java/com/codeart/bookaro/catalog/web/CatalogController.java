@@ -77,7 +77,7 @@ public class CatalogController {
     @PutMapping(value = "/{id}/cover", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void addBookCover(@PathVariable Long id, @RequestParam("file") MultipartFile file) throws IOException {
-        catalogService.addBookCover(new CatalogUseCase.UpdateBookCoverCommand(id,
+        catalogService.updateBookCover(new CatalogUseCase.UpdateBookCoverCommand(id,
                 file.getBytes(),
                 file.getContentType(),
                 file.getName()));
