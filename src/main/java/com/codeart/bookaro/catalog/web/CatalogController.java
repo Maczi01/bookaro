@@ -83,6 +83,11 @@ public class CatalogController {
                 file.getName()));
     }
 
+    @DeleteMapping("/{id}/cover")
+    public void removeBookCover(@PathVariable Long id){
+        catalogService.removeBookCover(id);
+    }
+
     private URI getUri(Book book) {
         return ServletUriComponentsBuilder.fromCurrentRequestUri().path("/" + book.getId().toString()).build().toUri();
     }

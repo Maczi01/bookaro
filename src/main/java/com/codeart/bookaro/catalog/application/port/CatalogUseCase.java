@@ -32,6 +32,8 @@ public interface CatalogUseCase {
 
     void updateBookCover(UpdateBookCoverCommand cover);
 
+    void removeBookCover(Long id);
+
     @Value
     class UpdateBookCoverCommand {
         Long id;

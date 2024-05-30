@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.codeart.bookaro.uploads.application.port.UploadUseCase.*;
+import static com.codeart.bookaro.uploads.application.port.UploadUseCase.SaveUploadCommand;
 
 @Service
 @AllArgsConstructor
@@ -93,6 +93,17 @@ class CatalogService implements CatalogUseCase {
                     book.setCoverId(savedUpload.getId());
                     repository.save(book);
                 });
+    }
+
+    @Override
+    public void removeBookCover(Long id) {
+        repository.findById(id).ifPresent(book -> {
+            if (book.getCoverId() != null) {
+                upload.removeById(book.getCoverId());
+                book.setCoverId(null);
+                repository.save(book);
+            }
+        });
     }
 }
 
