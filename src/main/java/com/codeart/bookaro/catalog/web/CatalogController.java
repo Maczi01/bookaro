@@ -35,10 +35,9 @@ public class CatalogController {
     ) {
         if (title.isPresent() && author.isEmpty()) {
             return catalogService.findByTitle(title.get());
+        } else if (title.isEmpty() && author.isPresent()) {
+            return catalogService.findByAuthor(author.get());
         }
-//        else if (title.isEmpty() && author.isPresent()) {
-//            return catalogService.findByAuthor(author.get());
-//        }
         return catalogService.findAll();
     }
 

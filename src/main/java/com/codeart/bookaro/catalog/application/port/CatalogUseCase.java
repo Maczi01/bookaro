@@ -24,7 +24,7 @@ public interface CatalogUseCase {
 
     UpdateBookResponse updateBook(UpdateBookCommand command);
 
-//    List<Book> findByAuthor(String author);
+    List<Book> findByAuthor(String author);
 
     Optional<Book> findOneByTitle(String title);
 
