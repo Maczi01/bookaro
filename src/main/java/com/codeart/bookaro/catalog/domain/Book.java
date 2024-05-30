@@ -1,8 +1,22 @@
 package com.codeart.bookaro.catalog.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import java.math.BigDecimal;
 
+
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+@Entity
 public class Book {
+    @Id
     private Long id;
     private String title;
     private String author;
