@@ -1,8 +1,7 @@
 package com.codeart.bookaro.order.application;
 
-import com.codeart.bookaro.catalog.domain.CatalogRepository;
+import com.codeart.bookaro.catalog.db.BookJpaRepository;
 import com.codeart.bookaro.order.application.port.QueryOrderUseCase;
-import com.codeart.bookaro.order.domain.Order;
 import com.codeart.bookaro.order.domain.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ import java.util.Optional;
 public class QueryOrderService implements QueryOrderUseCase {
 
     private final OrderRepository repository;
-    private final CatalogRepository catalogRepository;
+    private final BookJpaRepository catalogRepository;
 
 
     @Override

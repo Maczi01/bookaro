@@ -41,9 +41,9 @@ public class ApplicationRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        initData();
-        searchCatalog();
-        placeOrder();
+//        initData();
+//        searchCatalog();
+//        placeOrder();
     }
 
     private void placeOrder() {
