@@ -35,7 +35,7 @@ public class ManipulateOrderService implements ManipulateOrderUseCase {
     public void updateOrderStatus(Long id, OrderStatus status) {
         repository.findById(id)
                 .ifPresent(order -> {
-                    order.setOrderStatus(status);
+                    order.setStatus(status);
                     repository.save(order);
                 });
     }

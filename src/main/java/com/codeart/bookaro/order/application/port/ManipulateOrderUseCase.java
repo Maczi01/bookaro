@@ -12,7 +12,6 @@ import lombok.Value;
 import java.util.List;
 
 public interface ManipulateOrderUseCase {
-
     PlaceOrderResponse placeOrder(PlaceOrderCommand command);
 
     void deleteOrderById(Long id);

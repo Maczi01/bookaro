@@ -1,21 +1,19 @@
 package com.codeart.bookaro.catalog.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
-
+import java.util.Set;
 
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "authors")
 @RequiredArgsConstructor
 @Entity
 public class Book {
@@ -28,9 +26,20 @@ public class Book {
     private BigDecimal price;
     private String coverId;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable
+    @JsonIgnoreProperties("books")
+    private Set<Author> authors;
+
     public Book(Long newId, String title, String author, Integer year, BigDecimal price) {
         this.title = title;
         this.author = author;
+        this.year = year;
+        this.price = price;
+    }
+
+    public Book(String title, Integer year, BigDecimal price) {
+        this.title = title;
         this.year = year;
         this.price = price;
     }

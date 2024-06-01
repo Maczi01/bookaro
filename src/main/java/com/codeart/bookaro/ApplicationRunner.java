@@ -1,141 +1,90 @@
 package com.codeart.bookaro;
 
 import com.codeart.bookaro.catalog.application.port.CatalogUseCase;
+import com.codeart.bookaro.catalog.db.AuthorJpaRepository;
+import com.codeart.bookaro.catalog.domain.Author;
 import com.codeart.bookaro.catalog.domain.Book;
-import com.codeart.bookaro.order.application.port.PlaceOrderUseCase;
+import com.codeart.bookaro.order.application.port.ManipulateOrderUseCase;
 import com.codeart.bookaro.order.application.port.QueryOrderUseCase;
 import com.codeart.bookaro.order.domain.OrderItem;
 import com.codeart.bookaro.order.domain.Recipient;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.http.*;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 @Component
-public class ApplicationRunner implements CommandLineRunner {
+@AllArgsConstructor
+class ApplicationStartup implements CommandLineRunner {
 
-    private final CatalogUseCase catalogService;
-//    private final PlaceOrderUseCase placeOrder;
+    private final CatalogUseCase catalog;
+    private final ManipulateOrderUseCase placeOrder;
     private final QueryOrderUseCase queryOrder;
-    private final String title;
-    private final Long limit;
-    private final String author;
-
-    public ApplicationRunner(CatalogUseCase catalogService,
-//                             PlaceOrderUseCase placeOrder,
-                             QueryOrderUseCase queryOrder,
-                             @Value("${bookaro.catalog.query}") String title,
-                             @Value("${bookaro.catalog.limit}") Long limit,
-                             @Value("${bookaro.catalog.author}") String author
-
-    ) {
-        this.catalogService = catalogService;
-//        this.placeOrder = placeOrder;
-        this.queryOrder = queryOrder;
-        this.title = title;
-        this.limit = limit;
-        this.author = author;
-    }
+    private final AuthorJpaRepository authorJpaRepository;
 
     @Override
     public void run(String... args) {
         initData();
-//        searchCatalog();
-//        placeOrder();
+        placeOrder();
     }
 
     private void placeOrder() {
-        Book pan = catalogService.findOneByTitle("pan").orElseThrow(() -> new IllegalArgumentException("Cannot find a book"));
-//        Book harry = catalogService.findOneByTitle("har").orElseThrow(() -> new IllegalArgumentException("Cannot find a book"));
+        Book effectiveJava = catalog.findOneByTitle("Effective Java")
+                .orElseThrow(() -> new IllegalStateException("Cannot find a book"));
+        Book puzzlers = catalog.findOneByTitle("Java Puzzlers")
+                .orElseThrow(() -> new IllegalStateException("Cannot find a book"));
 
-        Recipient recipient = Recipient.builder()
-                .name("Recypient")
-                .city("Warszawa")
-                .email("recypient@rec.com")
-                .phone("0700")
-                .zipCode("56-271")
-                .street("Blotna")
+        // create recipient
+        Recipient recipient = Recipient
+                .builder()
+                .name("Jan Kowalski")
+                .phone("123-456-789")
+                .street("Armii Krajowej 31")
+                .city("Krakow")
+                .zipCode("30-150")
+                .email("jan@example.org")
                 .build();
-//        PlaceOrderUseCase.PlaceOrderCommand command = PlaceOrderUseCase.PlaceOrderCommand
-//                .builder()
-//                .recipient(recipient)
-//                .item(new OrderItem(pan, 16))
-////                .item(new OrderItem(harry, 7))
-//                .build();
-//        PlaceOrderUseCase.PlaceOrderResponse response = placeOrder.placeOrder(command);
-//        System.out.println("Created ORDER with ID " + response.getOrderId() );
-//        queryOrder.findAll().stream().forEach(f -> System.out.println("total price: " + f.totalPrice()));
 
-    }
+        ManipulateOrderUseCase.PlaceOrderCommand command = ManipulateOrderUseCase.PlaceOrderCommand
+                .builder()
+                .recipient(recipient)
+                .item(new OrderItem(effectiveJava.getId(), 16))
+                .item(new OrderItem(puzzlers.getId(), 7))
+                .build();
 
-    private void searchCatalog() {
+        ManipulateOrderUseCase.PlaceOrderResponse response = placeOrder.placeOrder(command);
+        String result = response.handle(
+                orderId -> "Created ORDER with id: " + orderId,
+                error -> "Failed to created order: " + error
+        );
+        System.out.println(result);
 
-//        findAndUpdate();
-        List<Book> all = catalogService.findAll();
-        all.stream().forEach(System.out::println);
-//        String query = "{ allPlanets { planets { name population terrains climates } } }";
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        HttpEntity<String> stringHttpEntity = new HttpEntity<>(query, headers);
-//        ResponseEntity<Map> response = restTemplate.exchange(
-//                "https://swapi-graphql.netlify.app/.netlify/functions/index",
-//                HttpMethod.POST,
-//                stringHttpEntity,
-//                Map.class
-//        );
-//
-//
-//        Map<String, Object> data = response.getBody();
-//        List<Map<String, Object>> planets = (List<Map<String, Object>>) ((Map<String, Object>) data.get("data")).get("allPlanets");
-//
-//        for (Map<String, Object> planetData : planets) {
-//            Planet planet = new Planet();
-//            planet.setName((String) planetData.get("name"));
-//            planet.setPopulation((String) planetData.get("population"));
-//            planet.setTerrains(String.join(", ", (List<String>) planetData.get("terrains")));
-//            planet.setClimates(String.join(", ", (List<String>) planetData.get("climates")));
-//            planetRepository.save(planet);
-//        }
-    }
-
-    private void findAndUpdate() {
-        catalogService.findOneByTitleAndAuthor("Harr", "row")
-                .ifPresent(book -> {
-                    CatalogUseCase.UpdateBookCommand updatedCommandBook = CatalogUseCase.UpdateBookCommand
-                            .builder()
-                            .id(book.getId())
-                            .title("Ostatni Zajazd na Litwie")
-                            .build();;
-                    CatalogUseCase.UpdateBookResponse updateBookResponse = catalogService.updateBook(updatedCommandBook);
-                    System.out.println("Update result: " + updateBookResponse.isSuccess());
-                });
+        // list all orders
+        queryOrder.findAll()
+                .forEach(order -> System.out.println("GOT ORDER WITH TOTAL PRICE: " + order.totalPrice() + " DETAILS: " + order));
     }
 
     private void initData() {
-        catalogService.addBook(new CatalogUseCase.CreateBookCommand("Harry Potter", "Rowling", 1999, new BigDecimal("19")));
-        catalogService.addBook(new CatalogUseCase.CreateBookCommand("pan tadeusz", "Mickiewicz", 1789, new BigDecimal("15")));
-        catalogService.addBook(new CatalogUseCase.CreateBookCommand("pan wolodyjowski", "Sien", 1789, new BigDecimal("12")));
-        catalogService.addBook(new CatalogUseCase.CreateBookCommand("pan tarej", "Remont", 1789, new BigDecimal("10")));
+        Author joshua = new Author("Joshua", "Bloch");
+        Author neal = new Author("Neal", "Gafter");
+        authorJpaRepository.save(joshua);
+        authorJpaRepository.save(neal);
 
-//        bookMap.put(1L, new Book(1L, "pan tadeusz", "Mickiewicz", 1789));
-//        bookMap.put(2L, new Book(2L, "pan wolodyjowski", "Sien", 1789));
-//        bookMap.put(3L, new Book(3L, "pan tarej", "Mickiewicz", 1789));
+        CatalogUseCase.CreateBookCommand effectiveJava = new CatalogUseCase.CreateBookCommand(
+                "Effective Java",
+                Set.of(joshua.getId()),
+                2005,
+                new BigDecimal("79.00")
+        );
+        CatalogUseCase.CreateBookCommand javaPuzzlers = new CatalogUseCase.CreateBookCommand(
+                "Java Puzzlers",
+                Set.of(joshua.getId(), neal.getId()),
+                2018,
+                new BigDecimal("99.00")
+        );
+        catalog.addBook(javaPuzzlers);
+        catalog.addBook(effectiveJava);
     }
 }
-//    public void findBook(String... args) {
-////        List<Book> bookList = catalogService.findByTitle(title);
-////        bookList.stream()
-////                .limit(limit)
-////                .forEach(System.out::println);
-//        List<Book> bookList = catalogService.findByAuthor(author);
-//        bookList.stream()
-//                .limit(limit)
-//                .forEach(System.out::println);
-//    }

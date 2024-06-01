@@ -16,7 +16,6 @@ public interface QueryOrderUseCase {
 
     Optional<RichOrder> findById(Long id);
 
-
     @Value
     class RichOrder {
         Long id;

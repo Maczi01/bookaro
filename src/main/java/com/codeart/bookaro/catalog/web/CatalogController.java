@@ -5,6 +5,7 @@ import com.codeart.bookaro.catalog.domain.Book;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,7 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -61,6 +63,7 @@ public class CatalogController {
         System.out.println("book----->" + book);
         URI uri = getUri(book);
         return ResponseEntity.created(uri).build();
+//        return null;
     }
 
     @PutMapping("/{id}")
@@ -95,11 +98,11 @@ public class CatalogController {
 
     @Data
     private static class RestBookCommand {
-        @NotBlank
+        @NotBlank(message = "Please provide a title")
         private String title;
 
-        @NotBlank
-        private String author;
+        @NotEmpty
+        private Set<Long> authors;
 
         @NotNull
         private Integer year;
@@ -109,13 +112,11 @@ public class CatalogController {
         private BigDecimal price;
 
         CatalogUseCase.CreateBookCommand toCreateCommand() {
-            return new CatalogUseCase.CreateBookCommand(title, author, year, price);
+            return new CatalogUseCase.CreateBookCommand(title, authors, year, price);
         }
 
         CatalogUseCase.UpdateBookCommand toUpdateCommand(Long id) {
-            return new CatalogUseCase.UpdateBookCommand(
-                    id, title, author, year, price
-            );
+            return new CatalogUseCase.UpdateBookCommand(id, title, authors, year, price);
         }
     }
 

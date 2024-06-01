@@ -16,4 +16,10 @@ public class OrderItem {
     private Long id;
     private Long bookId;
     private int quantity;
+
+
+    public OrderItem(Long bookId, int quantity) {
+        this.bookId = bookId;
+        this.quantity = quantity;
+    }
 }
