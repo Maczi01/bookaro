@@ -39,16 +39,17 @@ class CatalogService implements CatalogUseCase {
 
     @Override
     public Optional<Book> findOneByTitleAndAuthor(String title, String author) {
-        return findAll()
-                .stream()
-                .filter(book -> book.getTitle().toLowerCase().startsWith(title) || book.getAuthor().toLowerCase().startsWith(author))
-                .findAny();
+        return null;
+//
+//                findAll()
+//                .stream()
+//                .filter(book -> book.getTitle().toLowerCase().startsWith(title) || book.getAuthors().toLowerCase().startsWith(author))
+//                .findAny();
     }
 
     @Override
     public Book addBook(CreateBookCommand command) {
         Book book = toBook(command);
-        System.out.println("====" + book) ;
         return repository.save(book);
     }
 
@@ -74,7 +75,7 @@ class CatalogService implements CatalogUseCase {
         if (command.getTitle() != null) {
             book.setTitle(command.getTitle());
         }
-        if (command.getAuthors() != null && command.getAuthors().size() > 0) {
+        if (command.getAuthors() != null && !command.getAuthors().isEmpty()) {
             book.setAuthors(fetchAuthorsByIds(command.getAuthors()));
         }
         if (command.getYear() != null) {
@@ -124,7 +125,9 @@ class CatalogService implements CatalogUseCase {
     private Book toBook(CreateBookCommand command) {
         Book book = new Book(command.getTitle(), command.getYear(), command.getPrice());
         Set<Author> authors = fetchAuthorsByIds(command.getAuthors());
+        System.out.println("ble ble ble " + authors);
         book.setAuthors(authors);
+        System.out.println("temp book " + book);
         return book;
     }
 

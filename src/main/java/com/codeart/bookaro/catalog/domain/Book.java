@@ -21,7 +21,6 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String title;
-    private String author;
     private Integer year;
     private BigDecimal price;
     private String coverId;
@@ -31,12 +30,6 @@ public class Book {
     @JsonIgnoreProperties("books")
     private Set<Author> authors;
 
-    public Book(Long newId, String title, String author, Integer year, BigDecimal price) {
-        this.title = title;
-        this.author = author;
-        this.year = year;
-        this.price = price;
-    }
 
     public Book(String title, Integer year, BigDecimal price) {
         this.title = title;
@@ -52,18 +45,9 @@ public class Book {
         this.coverId = coverId;
     }
 
-    public Book(Long id, String title, String author, Integer year, BigDecimal price, String coverId) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.year = year;
-        this.price = price;
-        this.coverId = coverId;
-    }
 
     public Book(String title, String author, Integer year, BigDecimal price) {
         this.title = title;
-        this.author = author;
         this.year = year;
         this.price = price;
     }
@@ -82,14 +66,6 @@ public class Book {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public Integer getYear() {
@@ -113,7 +89,6 @@ public class Book {
         return "Book{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
                 ", year=" + year +
                 '}';
     }

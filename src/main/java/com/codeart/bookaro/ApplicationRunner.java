@@ -17,7 +17,7 @@ import java.util.Set;
 
 @Component
 @AllArgsConstructor
-class ApplicationStartup implements CommandLineRunner {
+class ApplicationRunner implements CommandLineRunner {
 
     private final CatalogUseCase catalog;
     private final ManipulateOrderUseCase placeOrder;
