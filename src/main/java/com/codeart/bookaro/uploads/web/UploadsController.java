@@ -23,7 +23,7 @@ public class UploadsController {
     private final UploadUseCase upload;
 
     @GetMapping("/{id}")
-    public ResponseEntity<UploadReponse> getUpload(@PathVariable String id) {
+    public ResponseEntity<UploadReponse> getUpload(@PathVariable Long id) {
         return upload
                 .getById(id)
                 .map(file -> {
@@ -38,7 +38,7 @@ public class UploadsController {
     }
 
     @GetMapping("/{id}/file")
-    public ResponseEntity<Resource> getUploadFile(@PathVariable String id) {
+    public ResponseEntity<Resource> getUploadFile(@PathVariable Long id) {
         return upload
                 .getById(id)
                 .map(file -> {
@@ -56,7 +56,7 @@ public class UploadsController {
     @Value
     @AllArgsConstructor
     static class UploadReponse {
-        String id;
+        Long id;
         String contentType;
         String fileName;
         LocalDateTime createdAt;

@@ -67,12 +67,6 @@ class CatalogService implements CatalogUseCase {
                 .orElseGet(() -> new UpdateBookResponse(false, Arrays.asList("Book with ID: " + command.getId() + " not found")));
     }
 
-
-//    @Override
-//    public List<Book> findByAuthor(String author) {
-//        return repository.findByAuthor(author);
-//    }
-
     @Override
     public Optional<Book> findOneByTitle(String title) {
         return findAll()
@@ -91,7 +85,7 @@ class CatalogService implements CatalogUseCase {
         repository.findById(command.getId())
                 .ifPresent(book -> {
                     Upload savedUpload = upload.save(new SaveUploadCommand(command.getFileName(), command.getFile(), command.getContentType()));
-                    book.setCoverId(savedUpload.getId());
+                    book.setCoverId(savedUpload.getId().toString());
                     repository.save(book);
                 });
     }
@@ -100,7 +94,7 @@ class CatalogService implements CatalogUseCase {
     public void removeBookCover(Long id) {
         repository.findById(id).ifPresent(book -> {
             if (book.getCoverId() != null) {
-                upload.removeById(book.getCoverId());
+                upload.removeById(Long.getLong(book.getCoverId()));
                 book.setCoverId(null);
                 repository.save(book);
             }

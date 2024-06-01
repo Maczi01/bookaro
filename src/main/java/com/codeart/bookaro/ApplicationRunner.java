@@ -8,10 +8,13 @@ import com.codeart.bookaro.order.domain.OrderItem;
 import com.codeart.bookaro.order.domain.Recipient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class ApplicationRunner implements CommandLineRunner {
@@ -71,9 +74,35 @@ public class ApplicationRunner implements CommandLineRunner {
     }
 
     private void searchCatalog() {
+
 //        findAndUpdate();
         List<Book> all = catalogService.findAll();
         all.stream().forEach(System.out::println);
+//        String query = "{ allPlanets { planets { name population terrains climates } } }";
+//
+//        RestTemplate restTemplate = new RestTemplate();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        HttpEntity<String> stringHttpEntity = new HttpEntity<>(query, headers);
+//        ResponseEntity<Map> response = restTemplate.exchange(
+//                "https://swapi-graphql.netlify.app/.netlify/functions/index",
+//                HttpMethod.POST,
+//                stringHttpEntity,
+//                Map.class
+//        );
+//
+//
+//        Map<String, Object> data = response.getBody();
+//        List<Map<String, Object>> planets = (List<Map<String, Object>>) ((Map<String, Object>) data.get("data")).get("allPlanets");
+//
+//        for (Map<String, Object> planetData : planets) {
+//            Planet planet = new Planet();
+//            planet.setName((String) planetData.get("name"));
+//            planet.setPopulation((String) planetData.get("population"));
+//            planet.setTerrains(String.join(", ", (List<String>) planetData.get("terrains")));
+//            planet.setClimates(String.join(", ", (List<String>) planetData.get("climates")));
+//            planetRepository.save(planet);
+//        }
     }
 
     private void findAndUpdate() {
