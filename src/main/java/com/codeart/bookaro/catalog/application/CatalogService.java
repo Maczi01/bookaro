@@ -37,20 +37,17 @@ class CatalogService implements CatalogUseCase {
         return repository.findAll();
     }
 
-    @Override
-    public Optional<Book> findOneByTitleAndAuthor(String title, String author) {
-        return null;
-//
-//                findAll()
-//                .stream()
-//                .filter(book -> book.getTitle().toLowerCase().startsWith(title) || book.getAuthors().toLowerCase().startsWith(author))
-//                .findAny();
-    }
 
     @Override
     public Book addBook(CreateBookCommand command) {
         Book book = toBook(command);
         return repository.save(book);
+    }
+
+
+    @Override
+    public List<Book> findOneByAuthor(String author) {
+        return repository.findByAuthors_firstNameContainsIgnoreCase(author);
     }
 
     @Override
